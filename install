@@ -1,3 +1,7 @@
 cd
 cd Bot-Lab
+apt update 
+apt install nmap -y
+apt install masscan -y
+apt install nano -y
 chmod u+x
