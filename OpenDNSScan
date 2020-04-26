@@ -1,0 +1,31 @@
+ #!/bin/bash
+ # Written by: M.B. Hudson (2020) malcode.net
+cd
+cd Bot-Lab
+clear
+echo "  A global Scan will be conducted and will take approx 24 hours"
+echo " during the scanning stage you may press CTRL+C to skip to the "
+echo " Nmap portion were the newly acquired server list will be"
+echo " checked for amplification vulnerabilities. Vulnerable servers "
+echo " will be saved to a file titled DNSMasterList.txt in "
+echo " your Bot-Lab Folder."
+echo "" 
+echo " Bot-Lab also saves your scan progress in between sessions "
+echo ""
+echo ""
+read -p "Press enter to continue with scan"
+masscan -p53 0.0.0.0/0 --exclude 255.255.255.255 --rate=99999999999 -oX /root/Bot-Lab/DNSGlobalScan.txt
+clear
+echo  "Extracting IPs.... "
+sleep 2
+grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /root/Bot-Lab/DNSGlobalScan.txt > /root/Bot-Lab/DNSGlobalIP.txt 
+sleep 2
+read -p "Press enter to continue with server exploit validation"
+clear
+nmap -sU -p 53 -sV -Pn --script dns-recursion -iL /root/Bot-Lab/DNSGlobalIP.txt -vv 2>&1 | tee DNSValid.txt 
+clear
+grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /root/Bot-Lab/DNSValid.txt > /root/Bot-Lab/DNSMasterList.txt
+echo ""
+echo "VALIDATED SERVER LIST SAVED AT /root/Bot-Lab/DNSMasterList.txt"
+read -p "Press enter to continue with scan"
+nano /root/Bot-Lab/DNSMasterList.txt
