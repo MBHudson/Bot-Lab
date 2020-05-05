@@ -1,5 +1,5 @@
- #!/bin/bash
- # Written by: M.B. Hudson (2020) malcode.net
+#!/bin/bash
+# Written by: M.B. Hudson (2020) malcode.net
 cd
 cd Bot-Lab
 clear
